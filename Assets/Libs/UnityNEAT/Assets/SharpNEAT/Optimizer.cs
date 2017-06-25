@@ -11,7 +11,7 @@ using System.IO;
 public class Optimizer : MonoBehaviour
 {
 
-	const int NUM_INPUTS = 3;
+	const int NUM_INPUTS = 5;
 	const int NUM_OUTPUTS = 2;
 
 	public int Trials;
@@ -39,7 +39,7 @@ public class Optimizer : MonoBehaviour
 	void Start ()
 	{
 		Utility.DebugLog = true;
-		experiment = new SimpleExperiment ();
+		experiment = new SimpleExperiment (); 
 		XmlDocument xmlConfig = new XmlDocument ();
 		TextAsset textAsset = (TextAsset)Resources.Load ("experiment.config");
 		xmlConfig.LoadXml (textAsset.text);
@@ -47,8 +47,8 @@ public class Optimizer : MonoBehaviour
 
 		experiment.Initialize ("My experiment", xmlConfig.DocumentElement, NUM_INPUTS, NUM_OUTPUTS);
 
-		champFileSavePath = Application.persistentDataPath + string.Format ("/{0}.champ.xml", "car");
-		popFileSavePath = Application.persistentDataPath + string.Format ("/{0}.pop.xml", "car");       
+		champFileSavePath = Application.persistentDataPath + string.Format ("/{0}.champ.xml", "bird");
+		popFileSavePath = Application.persistentDataPath + string.Format ("/{0}.pop.xml", "bird");       
 
 		print (champFileSavePath);
 	}
@@ -69,7 +69,7 @@ public class Optimizer : MonoBehaviour
 			frames = 0;
 			//   print("FPS: " + fps);
 			if (fps < 10) {
-				Time.timeScale = Time.timeScale - 1;
+				Time.timeScale = Mathf.Max (Time.timeScale - 1, 0.1f);
 				print ("Lowering time scale to " + Time.timeScale);
 			}
 		}
@@ -78,8 +78,8 @@ public class Optimizer : MonoBehaviour
 	public void StartEA ()
 	{        
 		Utility.DebugLog = true;
-		Utility.Log ("Starting PhotoTaxis experiment");
-		// print("Loading: " + popFileLoadPath);
+		Utility.Log ("Starting experiment :D");
+		print ("Loading: " + popFileSavePath);
 		_ea = experiment.CreateEvolutionAlgorithm (popFileSavePath);
 		startTime = DateTime.Now;
 
@@ -150,7 +150,9 @@ public class Optimizer : MonoBehaviour
 
 	public void Evaluate (IBlackBox box)
 	{
-		GameObject obj = Instantiate (Unit, Unit.transform.position, Unit.transform.rotation) as GameObject;
+		Vector3 position = Unit.transform.position + Vector3.Scale (UnityEngine.Random.onUnitSphere, new Vector3 (5, 4, 0));
+		Quaternion rotation = Quaternion.Euler (Unit.transform.rotation.eulerAngles + new Vector3 (0, 0, UnityEngine.Random.Range (0, 360)));
+		GameObject obj = Instantiate (Unit, position, rotation) as GameObject;
 		UnitController controller = obj.GetComponent<UnitController> ();
 
 		ControllerMap.Add (box, controller);
