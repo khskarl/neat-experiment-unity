@@ -1,3 +1,3 @@
-A really NEAT experiment in Unity using *UnityNEAT* (https://github.com/lordjesus/UnityNEAT), thank you lord jesus.
+A NEAT experiment using NeuroEvolution of Augmenting Topologies in Unity with **UnityNEAT**.
 
-No instructions because I don't have the time and it's not complete.
+Special thanks to lord jesus and his NEAT lib in Unity: https://github.com/lordjesus/UnityNEAT
